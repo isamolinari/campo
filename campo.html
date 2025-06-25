@@ -4,53 +4,90 @@
   <meta charset="UTF-8">
   <title>Validação de Email</title>
   <style>
-    .erro {
-      color: red;
-      font-size: 0.9em;
-      display: none;
+    body {
+      background-color: #f0f8ff; /* Cor de fundo (azul claro) */
+      font-family: Arial, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
     }
-    input:invalid {
-      border-color: red;
+
+    .form-container {
+      background-color: #ffffff;
+      padding: 20px 30px;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+      max-width: 400px;
+      width: 100%;
     }
-    input:valid {
-      border-color: green;
+
+    .form-container h2 {
+      margin-top: 0;
+      color: #333;
+    }
+
+    .form-container label {
+      display: block;
+      margin-bottom: 5px;
+      color: #555;
+    }
+
+    .form-container input[type="email"] {
+      width: 100%;
+      padding: 8px;
+      margin-bottom: 15px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      font-size: 16px;
+    }
+
+    .form-container input[type="submit"] {
+      background-color: #0066cc;
+      color: #fff;
+      border: none;
+      padding: 10px 15px;
+      font-size: 16px;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    .form-container input[type="submit"]:hover {
+      background-color: #005bb5;
     }
   </style>
 </head>
 <body>
-  <form id="formEmail" novalidate>
-    <label for="email">Email:</label><br>
-    <!-- validação nativa com HTML5 -->
-    <input type="email" id="email" name="email" required
-      pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$"
-      placeholder="exemplo@dominio.com"><br>
-    <span id="mensagemErro" class="erro">Por favor, insira um email válido.</span><br><br>
-    <button type="submit">Enviar</button>
-  </form>
+
+  <div class="form-container">
+    <h2>Insira seu email</h2>
+    <form action="#" onsubmit="return validarEmail()">
+      <label for="email">Email:</label>
+      <input type="email" id="email" name="email" required
+             placeholder="exemplo@dominio.com">
+      <input type="submit" value="Enviar">
+    </form>
+  </div>
 
   <script>
-    const form = document.getElementById('formEmail');
-    const emailInput = document.getElementById('email');
-    const erroSpan = document.getElementById('mensagemErro');
+    function validarEmail() {
+      const emailInput = document.getElementById('email');
+      const email = emailInput.value.trim();
 
-    form.addEventListener('submit', e => {
-      e.preventDefault();
+      // Validação simples via regex (além do type="email")
+      const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-      if (emailInput.checkValidity()) {
-        erroSpan.style.display = 'none';
-        alert('Email válido! Formulário enviado.');
-        form.reset();
-      } else {
-        erroSpan.style.display = 'block';
+      if (!regex.test(email)) {
+        alert('Por favor, insira um email válido.');
         emailInput.focus();
+        return false; // impede envio
       }
-    });
 
-    emailInput.addEventListener('input', () => {
-      if (emailInput.validity.valid) {
-        erroSpan.style.display = 'none';
-      }
-    });
+      alert('Email válido! Enviando formulário...');
+      return true; // permite envio
+    }
   </script>
+
 </body>
 </html>
